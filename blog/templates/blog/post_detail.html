@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ post.title }} - Shakir's Blog</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background: linear-gradient(to right, #2c3e50, #4ca1af);
+            color: #fff;
+            padding: 12px;
+            text-align: center;
+            box-shadow: 0 4px 2px -2px gray;
+            position: relative;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 20px;
+        }
+        nav {
+            margin: 0;
+            padding: 0;
+            background: #34495e;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            text-align: center;
+            display: inline-flex;
+        }
+        nav ul li {
+            margin: 0;
+        }
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            padding: 5px 15px;
+            display: inline-block;
+        }
+        nav ul li a:hover {
+            background: #2c3e50;
+        }
+        .auth-links {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+        }
+        .auth-links a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 10px;
+            background: #4ca1af;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .auth-links a:hover {
+            background: #2c3e50;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+            padding: 20px;
+        }
+        .post-detail {
+            background: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .post-detail h2 {
+            margin-top: 0;
+            color: #333;
+            font-size: 40px;
+            margin-bottom:10px;
+        }
+        .post-detail p {
+            color: #666;
+        }
+        .post-detail img.post-img {
+            width: 50%;
+            height: 50%;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+            
+        }
+        .post-detail .post-meta {
+            color: #888;
+            margin-bottom: 20px;
+        }
+        .author-img {
+            width: 40px; /* Slightly larger for visibility */
+            height: 40px;
+            border-radius: 50%;  /* Circular shape */
+            margin-right: 10px;
+            vertical-align: middle;
+            object-fit: cover;
+          
+        
+	}
+	 .post {
+            background: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative; /* Ensure buttons are positioned relative to the post container */
+        }
+
+        .post h2 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .post p {
+            color: #666;
+        }
+
+        .post img {
+            max-width: 300px;
+            max-height: 300px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .post-content {
+            flex: 1;
+        }
+
+        .author-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            vertical-align: middle;
+            object-fit: cover;
+        }
+
+        .post-actions {
+            position: absolute;
+            top: 140px;
+            right: 160px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .post-actions a {
+            text-decoration: none;
+            padding: 5px 10px;
+            background: #4ca1af;
+            color: #fff;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+
+        .post-actions a:hover {
+            background: #2c3e50;
+        }
+        footer {
+            background: #2c3e50;
+            color: #fff;
+            text-align: center;
+            padding: 0px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-shadow: 0 -4px 2px -2px gray;
+            font-size: 10px;
+        }
+        .back-to-home {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .back-to-home a {
+            color: #4ca1af;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .back-to-home a:hover {
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Shakir's Blog</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'blog-home' %}">Home</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
+                <li><a href="{% url 'contact' %}">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="auth-links">
+            {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}">Profile</a>
+                <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'register' %}">Register</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="post-detail">
+            <h2>{{ post.title }}</h2>
+            <p class="post-meta">
+                <img class="author-img" src="{{ post.author.profile.image.url }}">
+                <strong>By {{ object.author }}</strong> on {{ object.date_posted | date:"F d, Y" }} 
+		<div class="post-actions">
+		    {% if object.author == user %}
+			<a href="{% url 'post-update' object.id %}" class="btn-action">Update</a>
+			<a href="{% url 'post-delete' object.id %}" class="btn-action delete-btn">Delete</a>
+		    {% endif %}
+	      </div>
+
+            </p>
+            {% if object.post_img_url %}
+                <img align="center" class="post-img" src="{{ post.post_img_url }}" alt="Image for {{ post.title }}">
+            {% endif %}
+            <p>{{ object.content }}</p>
+        </div>
+
+        <div class="back-to-home">
+            <a href="{% url 'blog-home' %}">&larr; Back to Home</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Shakir. All rights reserved.</p>
+    </footer>
+</body>
+</html>

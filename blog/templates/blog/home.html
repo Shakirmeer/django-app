@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shakir's Blog</title>
+    <style>
+        body {
+	    font-family: Arial, sans-serif;
+	    line-height: 1.6;
+	    margin: 0;
+	    padding: 0;
+	    background-color: #f4f4f4;
+	}
+
+	header {
+	    background: linear-gradient(to right, #2c3e50, #4ca1af);
+	    color: #fff;
+	    padding: 12px;
+	    text-align: center;
+	    box-shadow: 0 4px 2px -2px gray;
+	    position: relative;
+	}
+
+	header h1 {
+	    margin: 0;
+	    font-size: 25px;
+	}
+
+	nav {
+	    margin: 0;
+	    padding: 0;
+	    background: #34495e;
+	}
+
+	nav ul {
+	    list-style: none;
+	    padding: 0;
+	    margin: 0;
+	    text-align: center;
+	    display: inline-flex;
+	}
+
+	nav ul li {
+	    margin: 0;
+	}
+
+	nav ul li a {
+	    color: #fff;
+	    text-decoration: none;
+	    padding: 5px 15px;
+	    display: inline-block;
+	}
+
+	nav ul li a:hover {
+	    background: #2c3e50;
+	}
+
+	.auth-links {
+	    position: absolute;
+	    right: 20px;
+	    top: 15px;
+	}
+
+	.auth-links a {
+	    color: #fff;
+	    text-decoration: none;
+	    margin-left: 10px;
+	    background: #4ca1af;
+	    padding: 5px 10px;
+	    border-radius: 5px;
+	}
+
+	.auth-links a:hover {
+	    background: #2c3e50;
+	}
+
+	.container {
+	    display: flex; /* Use Flexbox for layout */
+	    width: 93%;
+	    margin: auto;
+	    padding: 0; /* Remove padding to use full width */
+	    gap: 20px; /* Space between main content and sidebar */
+	}
+
+	.main-content {
+	    flex: 3; /* Main content takes up 3 parts of the available space */
+	    background: #fff;
+	    padding: 20px;
+	    border-radius: 5px;
+	    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	}
+
+	.right-sidebar {
+	    flex: 1; /* Sidebar takes up 1 part of the available space */
+	    background: #fff;
+	    padding: 10px;
+	    margin-top: 10px;
+	    border-radius: 5px;
+	    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	}
+
+	.post {
+	    background: #fff;
+	    padding: 20px;
+	    margin-bottom: 20px;
+	    border-radius: 5px;
+	    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	    display: flex;
+	    justify-content: space-between;
+	}
+
+	.post h2 {
+	    margin-top: 0;
+	    color: #333;
+	}
+
+	.post p {
+	    color: #666;
+	}
+
+	.post img {
+	    margin-left: 20px;
+	    max-width: 300px;
+	    height: auto;
+	    border-radius: 5px;
+	    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	}
+
+	.post-content {
+	    flex: 1;
+	}
+
+	.author-img {
+	    width: 4%; /* Slightly larger for visibility */
+            height: 4%;
+            border-radius: 50%;  /* Circular shape */
+            margin-right: 10px;
+            vertical-align: middle;
+            object-fit: cover;
+          
+	}
+
+	.pagination {
+	    text-align: center;
+	    padding: 30px 0;
+	    margin-top: 20px;
+	    position: relative;
+	    z-index: 1; /* Ensure it appears above other content */
+	}
+
+	.pagination .btn {
+	    display: inline-block;
+	    padding: 4px 10px;
+	    margin: 0 2px;
+	    font-size: 14px;
+	    color: #FF0000;
+	    background-color: #f4f4f4;
+	    border: 1px solid #ccc;
+	    border-radius: 5px;
+	    text-decoration: none;
+	}
+
+	.pagination .btn:hover {
+	    background-color: #4ca1af;
+	    color: white;
+	    border-color: #4ca1af;
+	}
+
+	.pagination .btn.active {
+	    background-color: #2c3e50;
+	    color: white;
+	    border-color: #2c3e50;
+	}
+
+	footer {
+	    background: #2c3e50;
+	    color: #fff;
+	    text-align: center;
+	    padding: -5px 0; /* Increased padding for spacing */
+	    position: fixed;
+	    bottom: 0;
+	    width: 100%;
+	    box-shadow: 0 -4px 2px -2px gray;
+	    font-size: 10px;
+	    z-index: 0; /* Ensure footer appears below other content */
+	}
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Shakir's Blog</h1>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
+                <li><a href="{% url 'contact' %}">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="auth-links">
+            {% if user.is_authenticated %}
+            	<a href="{% url 'post-create' %}">New Post</a>
+            	<a href="{% url 'profile' %}">Profile</a>
+                <a href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'register' %}">Register</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="main-content">
+            {% for post in posts %}
+                <div class="post">
+                    <div class="post-content">
+                        <h2><a href="{% url 'post-detail' post.pk %}">{{ post.title }}</a></h2>
+                        <p>
+                            <img class="author-img" src="{{ post.author.profile.image.url }}">
+                            <strong>By {{ post.author }}</strong> on {{ post.date_posted | date:"F d, Y" }}
+                        </p>
+                        <p>{{ post.content|truncatewords:30 }}</p>
+                        <a href="{% url 'post-detail' post.pk %}" class="read-more">Read more</a>
+                    </div>
+                    {% if post.post_img_url %}
+                        <img src="{{ post.post_img_url }}" alt="Image for {{ post.title }}">
+                    {% endif %}
+                </div>
+            {% endfor %}
+	   <div class="pagination">
+	    {% if is_paginated %}
+		{% if page_obj.has_previous %}
+		    <a class="btn" href="?page=1">First</a>
+		    <a class="btn" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+		{% endif %}
+
+		{% for num in page_obj.paginator_page_range %}
+		    {% if page_obj.number == num %}
+		        <a class="btn active" href="?page={{ num }}">{{ num }}</a>
+		    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:' 3' %}
+		        <a class="btn" href="?page={{ num }}">{{ num }}</a>
+		    {% endif %}
+		{% endfor %}
+
+		{% if page_obj.has_next %}
+		    <a class="btn" href="?page={{ page_obj.next_page_number }}">Next</a>
+		    <a class="btn" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+		{% endif %}
+	    {% endif %}
+	</div>
+
+        </div>
+        <aside class="right-sidebar">
+            <!-- Content for the right sidebar -->
+        </aside>
+    </div>
+
+   <footer>
+        <p>&copy; 2024 Shakir. All rights reserved.</p>
+    </footer>
+</body>
+</html>
